@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'login_validator.dart';
 
-class LoginBloc {
+class LoginBloc with LoginValidator {
   final _emailController = StreamController<String>();
   final _passwordController = StreamController<String>();
 
@@ -9,6 +10,13 @@ class LoginBloc {
   Function(String) get changePassword => _passwordController.sink.add;
 
   // Retrieve data from stream
-  Stream<String> get email => _emailController.stream;
-  Stream<String> get password => _passwordController.stream;
+  Stream<String> get email => _emailController.stream.transform(emailValidator);
+  Stream<String> get password =>
+      _passwordController.stream.transform(passwordValidator);
+
+  // Close stream
+  dispose() {
+    _emailController.close();
+    _passwordController.close();
+  }
 }
