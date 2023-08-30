@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import '../blocs/login_bloc/login_bloc.dart';
+import '../blocs/login_bloc/login_provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final LoginBloc loginBloc = LoginProvider.of(context);
+
     return Container(
       margin: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          emailField(),
-          passwordField(),
+          emailField(loginBloc),
+          passwordField(loginBloc),
           const SizedBox(height: 20.0),
           submitButton(),
         ],
@@ -19,7 +22,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget emailField() {
+  Widget emailField(LoginBloc loginBloc) {
     return StreamBuilder<String>(
       stream: loginBloc.email,
       // snapshot : stream 에서 받은 data
@@ -41,7 +44,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget passwordField() {
+  Widget passwordField(LoginBloc loginBloc) {
     return StreamBuilder<String>(
       stream: loginBloc.password,
       // snapshot : stream 에서 받은 data

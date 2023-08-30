@@ -25,5 +25,6 @@ class LoginBloc with LoginValidator {
 }
 
 // for Single Global Instance
-final loginBloc = LoginBloc();
+// final loginBloc = LoginBloc();   // Provider 를 통한 Global Instance 사용을 위해 주석처리
 // Scoped Instance 는 UI에서 Bloc 이 필요한 Widget 의 상위에 선언.
+// InheritedWidget을 상속받은 Provider 를 사용함.
