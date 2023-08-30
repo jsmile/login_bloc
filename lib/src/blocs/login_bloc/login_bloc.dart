@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'login_validator.dart';
 
+// Bloc : StreamController, sink.add(), StreamTransformer, listen()
+// 사용은 UI 에서 StreamBuilder 를 통해 Stream 을 listen 하고,
+// StreamBuilder() 의 snapshot 을 통해 Stream 에서 받은 data 를 UI 에서 사용.
 class LoginBloc with LoginValidator {
   final _emailController = StreamController<String>();
   final _passwordController = StreamController<String>();
@@ -20,3 +23,7 @@ class LoginBloc with LoginValidator {
     _passwordController.close();
   }
 }
+
+// for Single Global Instance
+final loginBloc = LoginBloc();
+// Scoped Instance 는 UI에서 Bloc 이 필요한 Widget 의 상위에 선언.

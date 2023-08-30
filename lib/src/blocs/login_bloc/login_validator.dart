@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+
 // mixin : class 상속과 상관없이 필요한 곳에서 사용할 수 있는 속성 또는 method 정의
 mixin LoginValidator {
   final emailValidator = StreamTransformer<String, String>.fromHandlers(
@@ -16,10 +18,12 @@ mixin LoginValidator {
     handleData: (data, sink) {
       if (data.length > 3) {
         sink.add(data);
+      } else {
+        throw FlutterError('Password must be at least 4 characters.');
       }
     },
     handleError: (error, stackTrace, sink) {
-      sink.addError('Password must be at least 4 characters.');
+      sink.addError(error.toString());
     },
   );
 }
