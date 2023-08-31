@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../blocs/login_bloc/login_bloc.dart';
 import '../blocs/login_bloc/login_provider.dart';
+import '../utils/ansi_color.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -16,13 +17,15 @@ class LoginScreen extends StatelessWidget {
           emailField(loginBloc),
           passwordField(loginBloc),
           const SizedBox(height: 20.0),
-          submitButton(),
+          submitButton(loginBloc),
         ],
       ),
     );
   }
 
   Widget emailField(LoginBloc loginBloc) {
+    // StreamBuilder() 의 stream을 통해 Stream 을 listen 하게 하고,
+    // builder 에서 stream 의 변화만들거나 변화를 UI 에 반영하게 함.
     return StreamBuilder<String>(
       stream: loginBloc.email,
       // snapshot : stream 에서 받은 data
@@ -33,11 +36,13 @@ class LoginScreen extends StatelessWidget {
             labelText: 'Email Address',
             hintText: 'abc@def.com',
             hintStyle: const TextStyle(color: Colors.grey),
+            // stream 변화 반영
             errorText: snapshot.hasError ? '${snapshot.error}' : null,
           ),
           // onChanged: (inputValue) {
           //   loginBloc.changeEmail(inputValue);
           // },
+          // stream 변화 생성
           onChanged: loginBloc.changeEmail, // 선언과 동시에 실행하는 것이 아니므로 () 를 제거.
         );
       },
@@ -66,13 +71,22 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget submitButton() {
-    return ElevatedButton(
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-      ),
-      onPressed: () {},
-      child: const Text('login'),
-    );
+  Widget submitButton(LoginBloc loginBloc) {
+    return StreamBuilder<Object>(
+        stream: loginBloc.submitValid,
+        builder: (context, snapshot) {
+          return ElevatedButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            ),
+            // Error 또는 시작하지 않은 경우에는 data 가 없음.
+            onPressed: snapshot.hasData
+                ? () {
+                    debugPrint(success('### Hello, LoginScreen! ###'));
+                  }
+                : null,
+            child: const Text('login'),
+          );
+        });
   }
 }
