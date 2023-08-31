@@ -80,11 +80,7 @@ class LoginScreen extends StatelessWidget {
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
             ),
             // Error 또는 시작하지 않은 경우에는 data 가 없음.
-            onPressed: snapshot.hasData
-                ? () {
-                    debugPrint(success('### Hello, LoginScreen! ###'));
-                  }
-                : null,
+            onPressed: snapshot.hasData ? loginBloc.submit : null,
             child: const Text('login'),
           );
         });
